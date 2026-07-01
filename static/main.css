@@ -1,3 +1,63 @@
-body{
-    font-family: Arial, Helvetica
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #f4f6fb;
+  color: #222;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  color: #2b3a67;
+}
+
+.content-section {
+  background-color: #ffffff;
+  border: 1px solid #dde2ee;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  max-width: 700px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-control-label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px;
+  border: 1px solid #c4cbdd;
+  border-radius: 6px;
+  font-size: 15px;
+}
+
+.btn {
+  background-color: #2b3a67;
+  color: #ffffff;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.error {
+  color: #c0392b;
+  font-weight: bold;
+}
+
+.is-invalid {
+  border-color: #c0392b;
+}
+
+.invalid-feedback {
+  color: #c0392b;
+  font-size: 14px;
 }
