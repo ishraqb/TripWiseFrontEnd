@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Your trip to {{ destination }} ({{ nights }} nights)</h2>
+
+  {% for plan in plans %}
+    <div class="content-section">
+      <h3>{{ plan.name }}</h3>
+      {% if plan.over_budget %}
+        <p class="error">This plan goes over budget before activities.</p>
+      {% endif %}
+      <p>Flight: {{ plan.flight.airline }} - ${{ plan.flight.price }} ({{ plan.flight.duration }})</p>
+      <p>Hotel: {{ plan.hotel.name }} - ${{ plan.hotel.price }}/night (rating {{ plan.hotel.rating }})</p>
+      <p>Base cost: ${{ plan.base_cost }}</p>
+      {% if plan.over_budget %}
+        <p>Over budget by ${{ 0 - plan.activity_budget }}</p>
+      {% else %}
+        <p>Activity budget: ${{ plan.activity_budget }}</p>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  <a href="{{ url_for('home') }}">Plan another trip</a>
+{% endblock content %}
