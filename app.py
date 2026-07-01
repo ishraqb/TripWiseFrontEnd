@@ -1,9 +1,35 @@
-from flask import Flask, render_template, flash, request
-from forms import TripForm
 import git
+import os
+
+from flask import Flask, render_template, flash, request
+from flask_sqlalchemy import SQLAlchemy
+from forms import TripForm
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "change-this-to-any-random-string"
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///site.db"
+db = SQLAlchemy(app)
+
+
+class Trip(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    destination = db.Column(db.String(100), nullable=False)
+    nights = db.Column(db.Integer, nullable=False)
+    budget = db.Column(db.Integer, nullable=False)
+    travelers = db.Column(db.Integer, nullable=False)
+    style = db.Column(db.String(100))
+    interests = db.Column(db.String(200))
+
+    def __repr__(self):
+        return f"Trip('{self.destination}', {self.nights} nights)"
+
+
+with app.app_context():
+    db.create_all()
 
 SAMPLE_FLIGHTS = {
     "cheapest": {"airline": "Budget Air", "price": 480, "duration": "8h 45m"},
@@ -21,6 +47,7 @@ PLAN_TIERS = [
     ("Experience-Focused", "premium"),
 ]
 
+
 @app.route("/update_server", methods=['POST'])
 def webhook():
     if request.method == 'POST':
@@ -30,6 +57,7 @@ def webhook():
         return 'Updated PythonAnywhere successfully', 200
     else:
         return 'Wrong event type', 400
+
 
 def build_plans(nights, budget):
     plans = []
@@ -58,6 +86,16 @@ def home():
             flash("Return date must be after the departure date.")
             return render_template("home.html", form=form)
         plans = build_plans(nights, form.budget.data)
+        trip = Trip(
+            destination=form.destination.data,
+            nights=nights,
+            budget=form.budget.data,
+            travelers=form.travelers.data,
+            style=form.style.data,
+            interests=form.interests.data,
+        )
+        db.session.add(trip)
+        db.session.commit()
         return render_template("results.html", plans=plans,
                                destination=form.destination.data, nights=nights)
     return render_template("home.html", form=form)
