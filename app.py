@@ -1,5 +1,6 @@
-from flask import Flask, render_template, flash
+from flask import Flask, render_template, flash, request
 from forms import TripForm
+import git
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "change-this-to-any-random-string"
@@ -20,6 +21,15 @@ PLAN_TIERS = [
     ("Experience-Focused", "premium"),
 ]
 
+@app.route("/update_server", methods=['POST'])
+def webhook():
+    if request.method == 'POST':
+        repo = git.Repo('/home/TripWiseFrontEnd/TripWiseFrontEnd')
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
 
 def build_plans(nights, budget):
     plans = []
