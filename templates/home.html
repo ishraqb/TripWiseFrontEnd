@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="content-section">
+    <form method="POST" action="">
+      {{ form.hidden_tag() }}
+      <fieldset class="form-group">
+
+        <div class="form-group">
+          {{ form.destination.label(class="form-control-label") }}
+          {% if form.destination.errors %}
+            {{ form.destination(class="form-control is-invalid") }}
+            <div class="invalid-feedback">
+              {% for err in form.destination.errors %}
+                <span>{{ err }}</span>
+              {% endfor %}
+            </div>
+          {% else %}
+            {{ form.destination(class="form-control") }}
+          {% endif %}
+        </div>
+
+        <div class="form-group">
+          {{ form.start_date.label(class="form-control-label") }}
+          {{ form.start_date(class="form-control", type="date") }}
+        </div>
+        <div class="form-group">
+          {{ form.end_date.label(class="form-control-label") }}
+          {{ form.end_date(class="form-control", type="date") }}
+        </div>
+        <div class="form-group">
+          {{ form.budget.label(class="form-control-label") }}
+          {{ form.budget(class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form.travelers.label(class="form-control-label") }}
+          {{ form.travelers(class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form.style.label(class="form-control-label") }}
+          {{ form.style(class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form.interests.label(class="form-control-label") }}
+          {{ form.interests(class="form-control") }}
+        </div>
+
+      </fieldset>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-outline-info") }}
+      </div>
+    </form>
+  </div>
+{% endblock content %}
